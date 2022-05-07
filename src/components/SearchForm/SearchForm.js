@@ -1,6 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { searchVideos, setSearchTerm } from "../NavBar/searchVideosSlice";
+import {
+  searchVideos,
+  setCurrentVideo,
+  setSearchTerm,
+} from "../NavBar/searchVideosSlice";
 import { debounce as _debounce } from "lodash";
 import { withNavigation, withSearchParams } from "../../hocs";
 
@@ -24,12 +28,13 @@ class SearchForm extends React.Component {
 
   componentDidMount() {
     const [searchParams] = this.props.searchParams;
-    const searchTerm = searchParams.get("q");
+    const searchTerm = searchParams.get("q") || "";
 
     // Set search term from URL search params
     this.setState({ searchTerm });
     this.props.setSearchTerm(searchTerm);
-    this.props.searchVideos({ searchTerm });
+
+    this.handleSearchVideos({ searchTerm });
 
     window.addEventListener("startSearching", this.focusSearch);
   }
@@ -37,6 +42,20 @@ class SearchForm extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("startSearching", this.focusSearch);
   }
+
+  handleSearchVideos = async ({ searchTerm }) => {
+    try {
+      const videos = await this.props.searchVideos({ searchTerm });
+
+      if (!this.props.currentVideo?.id && videos) {
+        this.props.setCurrentVideo(videos[0]);
+      }
+    } catch (e) {
+      this.props.navigate(`/error`, {
+        state: { error: e },
+      });
+    }
+  };
 
   onSearchInputChange = (event) => {
     const searchTerm = event.target.value;
@@ -53,10 +72,10 @@ class SearchForm extends React.Component {
     // This prevents to send empty terms if the user hits enter too fast
     this.debouncedSetSearchTerm.cancel();
     this.debouncedSetSearchTerm(searchTerm);
-    this.props.searchVideos({ searchTerm });
-
-    // Send search term to the navigation schema
-    this.props.navigate(`/search?${q}`);
+    this.handleSearchVideos({ searchTerm }).then(() =>
+      // Send search term to the navigation schema
+      this.props.navigate(`/search?${q}`)
+    );
   };
 
   render() {
@@ -64,7 +83,7 @@ class SearchForm extends React.Component {
       <form className="d-flex">
         <input
           ref={this.searchInputRef}
-          value={this.props.searchTerm}
+          value={this.state.searchTerm}
           onChange={this.onSearchInputChange}
           className="form-control me-2"
           type="search"
@@ -83,12 +102,17 @@ class SearchForm extends React.Component {
   }
 }
 
-const mapStateToProps = ({ searchTerm, videos }) => ({
-  searchTerm,
-  videos,
-});
+const mapStateToProps = ({ searchedVideos }) => {
+  const { currentVideo, searchTerm, videos } = searchedVideos;
 
-const mapDispatchToProps = { searchVideos, setSearchTerm };
+  return {
+    currentVideo,
+    searchTerm,
+    videos,
+  };
+};
+
+const mapDispatchToProps = { searchVideos, setSearchTerm, setCurrentVideo };
 
 export default connect(
   mapStateToProps,

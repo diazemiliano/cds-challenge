@@ -1,4 +1,5 @@
 import WatchVideoButton from "../WatchVideoButton/WatchVideoButton";
+import VideoTimeStampFromat from "../Formats/VideoTimeStampFromat";
 
 function VideoThumbnail() {
   return (
@@ -21,10 +22,15 @@ function VideoThumbnail() {
           </p>
           <div className="d-flex justify-content-between align-items-center">
             <div className="btn-group">
-              <WatchVideoButton videoId={this.props.video.id} />
+              <WatchVideoButton
+                video={this.props.video}
+                label={this.props.actionButtonLabel}
+              />
             </div>
             <small className="text-muted">
-              {this.formatDate(this.props.video.snippet.publishedAt)}
+              <VideoTimeStampFromat
+                date={this.props.video.snippet.publishedAt}
+              />
             </small>
           </div>
         </div>

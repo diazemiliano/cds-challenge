@@ -6,20 +6,35 @@ import VideoThumbnail from "../VideoThumbnail/VideoThumbnail";
 // import styles from "./VideoList.module.scss";
 
 class VideoList extends React.Component {
-  renderVideos = () =>
-    this.props.videos.map((video) => {
-      return <VideoThumbnail key={video.id} video={video} horizontal={true} />;
+  renderVideos = () => {
+    let filterCurrentVideo = this.props.videos.filter(
+      (video) => video.id !== this.props.currentVideo.id
+    );
+
+    filterCurrentVideo = filterCurrentVideo.slice(0, 3);
+
+    return filterCurrentVideo.map((video) => {
+      return (
+        <VideoThumbnail
+          key={video.id}
+          video={video}
+          horizontal={true}
+          actionButtonLabel="Select"
+        />
+      );
     });
+  };
 
   render() {
-    return <div className="container-fluid">{this.renderVideos()}</div>;
+    return <div className="mt-3">{this.renderVideos()}</div>;
   }
 }
 
 const mapStateToProps = ({ searchedVideos }) => {
-  const { videos } = searchedVideos;
+  const { currentVideo, videos } = searchedVideos;
 
   return {
+    currentVideo,
     videos,
   };
 };

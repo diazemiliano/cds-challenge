@@ -5,6 +5,8 @@ import {
   useSearchParams,
 } from "react-router-dom";
 
+import localStorage from "./localStorage";
+
 function withNavigation(Component) {
   return (props) => <Component {...props} navigate={useNavigate()} />;
 }
@@ -21,4 +23,14 @@ function withSearchParams(Component) {
   return (props) => <Component {...props} searchParams={useSearchParams()} />;
 }
 
-export { withNavigation, withParams, withLocation, withSearchParams };
+function withLocalStorage(Component) {
+  return (props) => <Component {...props} localStorage={localStorage} />;
+}
+
+export {
+  withNavigation,
+  withParams,
+  withLocation,
+  withSearchParams,
+  withLocalStorage,
+};

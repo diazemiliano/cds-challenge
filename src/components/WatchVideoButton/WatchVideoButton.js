@@ -1,19 +1,24 @@
 import styles from "./WatchVideoButton.module.scss";
-import { useNavigate } from "react-router-dom";
+import { WATCH_VIDEO_BUTTON_CLICKED_EVENT } from "../../enums/CustomEventNames";
 
-function WatchVideoButton({ videoId }) {
-  const navigate = useNavigate();
-  const watchVideo = () => {
-    navigate(`/video/${videoId}`);
+function WatchVideoButton({ video, label }) {
+  const emitButtonClicked = () => {
+    const detail = {
+      video,
+    };
+
+    window.dispatchEvent(
+      new CustomEvent(WATCH_VIDEO_BUTTON_CLICKED_EVENT, { detail })
+    );
   };
 
   return (
     <button
-      onClick={watchVideo}
+      onClick={emitButtonClicked}
       type="button"
       className={`${styles.watchButton} btn btn-sm text-white`}
     >
-      Watch
+      {label}
     </button>
   );
 }

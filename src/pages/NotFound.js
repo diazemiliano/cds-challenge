@@ -4,7 +4,7 @@ import SearchForm from "../components/SearchForm/SearchForm";
 function NotFound() {
   return (
     <div className="px-4 py-4 my-4 text-center">
-      <i className={`${styles.iconLogo} bi bi-bug-fill`}></i>
+      <i className={`${styles.iconLogo} bi bi-binoculars-fill`}></i>
       <h1 className="display-5 fw-bold">Whoops!</h1>
       <div className="col-lg-6 mx-auto">
         <p className="lead mb-4">

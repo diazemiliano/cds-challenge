@@ -15,14 +15,6 @@ const WelcomeTemplate = function () {
             to find it's here or isn't exists.
           </p>
           <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            {/*<button*/}
-            {/*  onClick={this.startSearching}*/}
-            {/*  type="button"*/}
-            {/*  className="btn btn-primary btn-lg px-4 gap-3"*/}
-            {/*>*/}
-            {/*  Search Now*/}
-            {/*</button>*/}
-
             <SearchForm />
           </div>
         </div>
@@ -30,9 +22,7 @@ const WelcomeTemplate = function () {
       {/*---------------------------*/}
       <div className="album py-5 bg-light">
         <div className="container">
-          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            {this.renderVideos()}
-          </div>
+          {this.props.videos.length ? this.renderVideos() : this.renderEmpty()}
         </div>
       </div>
     </React.Fragment>

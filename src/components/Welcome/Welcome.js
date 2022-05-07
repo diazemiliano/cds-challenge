@@ -15,10 +15,23 @@ class Welcome extends React.Component {
     window.dispatchEvent(startSearchingEvent);
   };
 
-  renderVideos = () =>
-    this.props.videos.map((video) => {
+  renderVideos = () => {
+    const videos = this.props.videos.map((video) => {
       return <VideoThumbnail key={video.id} video={video} />;
     });
+
+    return (
+      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {videos}
+      </div>
+    );
+  };
+
+  renderEmpty = () => (
+    <div className="row text-center">
+      <h6> No videos Found.</h6>
+    </div>
+  );
 
   render() {
     return WelcomeTemplate.call(this);

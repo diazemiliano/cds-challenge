@@ -5,11 +5,15 @@ const searchVideosSlice = createSlice({
   name: "searchVideos",
   initialState: {
     searchTerm: "",
+    currentVideo: {},
     videos: [],
   },
   reducers: {
     setSearchTerm(state, action) {
       return { ...state, ...{ searchTerm: action.payload } };
+    },
+    setCurrentVideo(state, action) {
+      return { ...state, ...{ currentVideo: { ...action.payload } } };
     },
     addVideos(state, action) {
       return { ...state, ...{ videos: [...action.payload] } };
@@ -21,12 +25,11 @@ export const searchVideos =
   ({ searchTerm = "" } = {}) =>
   async (dispatch) => {
     try {
-      console.log("searchVideos", searchTerm);
       const { data } = await YouTubeApi.get("/search", {
         params: {
           part: "snippet",
           type: "video",
-          maxResults: 5,
+          maxResults: 4,
           q: searchTerm,
         },
       });
@@ -37,14 +40,26 @@ export const searchVideos =
         return video;
       });
 
+      // dispatch(setCurrentVideo(data.items[0]));
       dispatch(addVideos(data.items));
       dispatch(setSearchTerm(searchTerm));
+      return data.items;
     } catch (e) {
-      console.error("Whoops!", e);
+      const responseErrors = (e?.response?.data?.error?.errors || []).map(
+        (error) => error.message
+      );
+      let message = `${e?.message}. ` || "";
+
+      if (responseErrors.length) {
+        message += responseErrors.join(" ");
+      }
+
+      throw new Error(`Whoops! ${message}`);
     }
   };
 
 export const searchTerm = (state) => state.term;
 export const videosList = (state) => state.videos;
-export const { setSearchTerm, addVideos } = searchVideosSlice.actions;
+export const { setSearchTerm, setCurrentVideo, addVideos } =
+  searchVideosSlice.actions;
 export default searchVideosSlice.reducer;
