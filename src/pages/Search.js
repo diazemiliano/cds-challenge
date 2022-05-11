@@ -3,7 +3,7 @@ import NavBar from "../components/NavBar/NavBar";
 import FeaturedVideo from "../components/FeaturedVideo/FeaturedVideo";
 import VideoList from "../components/VideoList/VideoList";
 import { connect } from "react-redux";
-import { setCurrentVideo } from "../components/NavBar/searchVideosSlice";
+import { setCurrentVideo } from "../components/SearchForm/searchSlice";
 import {
   VIDEO_DETAILS_BUTTON_CLICKED_EVENT,
   WATCH_VIDEO_BUTTON_CLICKED_EVENT,

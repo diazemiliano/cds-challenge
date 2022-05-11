@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./WelcomeTemplate.module.scss";
 import SearchForm from "../SearchForm/SearchForm";
 
-const WelcomeTemplate = function () {
+const WelcomeTemplate = function() {
   return (
     <React.Fragment>
       <div className="px-4 py-4 my-4 text-center">
@@ -22,7 +22,7 @@ const WelcomeTemplate = function () {
       {/*---------------------------*/}
       <div className="album py-5 bg-light">
         <div className="container">
-          {this.props.videos.length ? this.renderVideos() : this.renderEmpty()}
+          {this.handleRender()}
         </div>
       </div>
     </React.Fragment>

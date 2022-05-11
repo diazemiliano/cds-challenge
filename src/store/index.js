@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import searchVideosReducer from "../components/NavBar/searchVideosSlice";
+import searchVideosReducer from "../components/SearchForm/searchSlice";
 import popularVideosReducer from "../components/Welcome/popularVideosReducer";
 
 const store = configureStore({

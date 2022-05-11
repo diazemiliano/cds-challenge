@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import {
   searchVideos,
   setCurrentVideo,
-  setSearchTerm,
-} from "../NavBar/searchVideosSlice";
+  setSearchTerm
+} from "./searchSlice";
 import { debounce as _debounce } from "lodash";
 import { withNavigation, withSearchParams } from "../../hocs";
 
@@ -45,6 +45,7 @@ class SearchForm extends React.Component {
 
   handleSearchVideos = async ({ searchTerm }) => {
     try {
+      if (!searchTerm) return;
       const videos = await this.props.searchVideos({ searchTerm });
 
       if (!this.props.currentVideo?.id && videos) {
@@ -52,7 +53,7 @@ class SearchForm extends React.Component {
       }
     } catch (e) {
       this.props.navigate(`/error`, {
-        state: { error: e },
+        state: { error: e }
       });
     }
   };
@@ -103,12 +104,13 @@ class SearchForm extends React.Component {
 }
 
 const mapStateToProps = ({ searchedVideos }) => {
-  const { currentVideo, searchTerm, videos } = searchedVideos;
+  const { currentVideo, searchTerm, videos, queryStatus } = searchedVideos;
 
   return {
+    queryStatus,
     currentVideo,
     searchTerm,
-    videos,
+    videos
   };
 };
 
