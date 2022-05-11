@@ -21,23 +21,31 @@ const popularVideosSlice = createSlice({
 });
 
 export const searchPopularVideos = () => async (dispatch) => {
-  try {
+  return new Promise((resolve, reject) => {
+
     dispatch(setQueryStatus(QUERY_STATUS_LOADING));
-    const { data } = await YouTubeApi.get("/videos", {
-      params: {
-        part: "snippet",
-        chart: "mostPopular",
-        maxResults: 6
+
+    // Emulate 3 seconds delay.
+    setTimeout(async () => {
+      try {
+        const { data } = await YouTubeApi.get("/videos", {
+          params: {
+            part: "snippet",
+            chart: "mostPopular",
+            maxResults: 6
+          }
+        });
+
+        dispatch(setQueryStatus(QUERY_STATUS_IDLE));
+        dispatch(addVideos(data.items));
+        resolve();
+      } catch (e) {
+        dispatch(setQueryStatus(QUERY_STATUS_ERROR));
+        reject(YouTubeApiErrorMessagesParser(e));
       }
-    });
+    }, 3000);
 
-    dispatch(setQueryStatus(QUERY_STATUS_IDLE));
-    dispatch(addVideos(data.items));
-  } catch (e) {
-
-    dispatch(setQueryStatus(QUERY_STATUS_ERROR));
-    throw YouTubeApiErrorMessagesParser(e);
-  }
+  });
 };
 
 export const { addVideos, setQueryStatus } = popularVideosSlice.actions;

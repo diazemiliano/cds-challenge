@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { setCurrentVideo } from "../components/SearchForm/searchSlice";
 import {
   VIDEO_DETAILS_BUTTON_CLICKED_EVENT,
-  WATCH_VIDEO_BUTTON_CLICKED_EVENT,
+  WATCH_VIDEO_BUTTON_CLICKED_EVENT
 } from "../enums/CustomEventNames";
 import { withLocalStorage, withNavigation } from "../hocs";
 import FeaturedVideoDetail from "../components/FeaturedVideo/FeaturedVideoDetail";
@@ -14,7 +14,7 @@ import { LOCAL_STORAGE_KEY_WATCHED_COUNT } from "../enums/LocalStorageKeys";
 
 class Search extends React.Component {
   state = {
-    videosWatched: 0,
+    videosWatched: 0
   };
 
   selectVideo = (event) => {
@@ -37,7 +37,7 @@ class Search extends React.Component {
 
   increaseCount = () => {
     this.setState({
-      videosWatched: this.state.videosWatched + 1,
+      videosWatched: this.state.videosWatched + 1
     });
 
     this.props.localStorage.setValue(
@@ -129,7 +129,7 @@ const mapStateToProps = ({ searchedVideos }) => {
 
   return {
     currentVideo,
-    videos,
+    videos
   };
 };
 

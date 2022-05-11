@@ -46,7 +46,7 @@ class FeaturedVideo extends React.Component {
 
     return video.id ? (
       <React.Fragment>
-        <div className="row m-0">
+        <div className="row m-0" >
           <div className="col p-0">
             <div className="ratio ratio-16x9">
               {this.props.onlythumbnail ? theImage() : theIframe()}
@@ -62,7 +62,7 @@ class FeaturedVideo extends React.Component {
 
     return (
       <div className="row">
-        <div className="col m-3 my-0 p-3 gap-3 bg-light">
+        <div className="col m-3 my-0 p-3 gap-3 bg-light" style={{ minHeight: "390px" }}>
           {video ? this.renderVideo({ video }) : null}
         </div>
       </div>

@@ -7,6 +7,7 @@ import {
 } from "./searchSlice";
 import { debounce as _debounce } from "lodash";
 import { withNavigation, withSearchParams } from "../../hocs";
+import { SEARCH_FORM_SUBMIT_EVENT } from "../../enums/CustomEventNames";
 
 class SearchForm extends React.Component {
   constructor(props) {
@@ -35,19 +36,12 @@ class SearchForm extends React.Component {
     this.props.setSearchTerm(searchTerm);
 
     this.handleSearchVideos({ searchTerm });
-
-    window.addEventListener("startSearching", this.focusSearch);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("startSearching", this.focusSearch);
   }
 
   handleSearchVideos = async ({ searchTerm }) => {
     try {
       if (!searchTerm) return;
       const videos = await this.props.searchVideos({ searchTerm });
-
       if (!this.props.currentVideo?.id && videos) {
         this.props.setCurrentVideo(videos[0]);
       }
@@ -73,11 +67,12 @@ class SearchForm extends React.Component {
     // This prevents to send empty terms if the user hits enter too fast
     this.debouncedSetSearchTerm.cancel();
     this.debouncedSetSearchTerm(searchTerm);
-    this.handleSearchVideos({ searchTerm }).then(() =>
-      // Send search term to the navigation schema
-      this.props.navigate(`/search?${q}`)
-    );
+    this.handleSearchVideos({ searchTerm });
+
+    const onSearchFormSubmit = new CustomEvent(SEARCH_FORM_SUBMIT_EVENT, { detail: { searchTerm } });
+    window.dispatchEvent(onSearchFormSubmit);
   };
+
 
   render() {
     return (

@@ -23,7 +23,7 @@ function NavBarTemplate() {
           </span>
         </Link>
 
-        <div className="col d-flex justify-content-start">
+        <div className="col col-1 d-flex justify-content-start">
           {renderBack ? (
             <button
               className="btn btn-sm btn-outline-secondary"
